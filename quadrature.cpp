@@ -19,7 +19,7 @@ void Quadrature_encoder::begin()
     Enc_B = digitalRead(B_pin);
     
     //configure the interrupts
-    attachInterrupt(A_pin, delta_A, CHANGE);
+//    attachInterrupt(A_pin, delta_A, CHANGE);
 //    attachInterrupt(B_pin, delta_B, CHANGE);
 }
 
