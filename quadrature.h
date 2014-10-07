@@ -20,22 +20,40 @@ namespace Motion {
 	enum motion{frwd, back, stop};
 }
 
+namespace QEM {
+    //Quadrature Encoder Matrix from OddBot
+    const int qem[16] = {0,-1,1,2,1,0,2,-1,-1,2,0,1,2,1,-1,0};
+}
+
 class Quadrature_encoder {
 
 public:
-	Quadrature_endoder(cont int Enc_A_int_pin, const int Enc_B_int_pin);
-	long count();
+	//Constructor
+	/*
+	   TODO use pre-processor commands to make the constructor
+	   flexible for Uno, Mega or Due use.
+	*/
+	Quadrature_encoder(const int Enc_A_int_pin, const int Enc_B_int_pin);
+    
+    // Must be called in the sketch Setup
+    void begin();
+    
+    // count() return the total counts accumulated by the encoder
+    long count() {return ct;}
+    
+    // motion() returns whether the encoder has moved forward, backward,
+    // or is motionless SINCE THE LAST TIME MOTION WAS CALLED.
 	Motion::motion motion();
 	
 private:
-	static const int QEM[16] = {0,-1,1,2,1,0,2,-1,-1,2,0,1,2,1,-1,0};
 	
 	const int A_pin;
 	const int B_pin;
 	volatile byte Enc_A;
 	volatile byte Enc_B;
 	volatile uint8_t out_val, old_reading, new_reading;
-	volatile long count;
+	volatile long ct;
+    long old_ct;
 	
 	// ISR's
 	void delta_A();
