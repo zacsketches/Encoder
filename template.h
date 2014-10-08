@@ -31,14 +31,18 @@ class Counter{
 public:
 	static int ct;
 
-	Counter<A>() {}
+	Counter<A>() {} 
+	
 	void begin(){
-		pinMode(A_pin, INPUT_PULLUP);
-		attachInterrupt(A_pin, &Counter<A>::inc, FALLING);
+		//pinMode(A_pin, INPUT_PULLUP);
+		attachInterrupt(A_pin, &Counter<A>::inc, CHANGE);
 	}
 	
 	int count() {return ct;}
 	
 };
+
+template<int A> int Counter<A>::ct = 0;
+
 
 #endif
