@@ -59,7 +59,7 @@ public:
 	   TODO use pre-processor commands to make the constructor
 	   flexible for Uno, Mega or Due use.
 	*/
-	Quadrature_encoder<A, B>() {};
+	Quadrature_encoder<A, B>() : r(false) {};
     
     // Must be called in the sketch Setup
     void begin();
@@ -71,8 +71,18 @@ public:
     // or is motionless SINCE THE LAST TIME MOTION WAS CALLED.
 	Motion::motion motion();
 	
+	//invert the output of .motion for the same direction of 
+	//physical rotation of the shaft.  The simplest way to achieve
+	//this is to swap the two encoder pins.  However, if you have the
+	//shaft encoder pins plugged into a PCB or header that prevents
+	//swapping the input pins then calling .reverse() in the setup
+	//of your sketch will give you the correct output from subsequent
+	//calls to .motion()
+	void reverse() { r = !r; }
+	
 private:
 	
+	bool r;
 	static const int A_pin = A;
 	static const int B_pin = B;
 	static volatile byte Enc_A;
@@ -119,10 +129,10 @@ Motion::motion Quadrature_encoder<A, B>::motion()
     long new_count = count();
     long delta = new_count - old_ct;
     if(delta > 0) {
-        res = Motion::frwd;
+        res = (!r) ? Motion::frwd : Motion::back;
     }
     else if (delta < 0){
-        res = Motion::back;
+        res = (!r) ? Motion::back : Motion::frwd;
     }
     else if (delta == 0){
         res = Motion::stop;
