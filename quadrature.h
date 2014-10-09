@@ -59,7 +59,7 @@ public:
 	   TODO use pre-processor commands to make the constructor
 	   flexible for Uno, Mega or Due use.
 	*/
-	Quadrature_encoder<A, B>() : r(false) {};
+	Quadrature_encoder<A, B>() {};
     
     // Must be called in the sketch Setup
     void begin();
@@ -82,7 +82,6 @@ public:
 	
 private:
 	
-	bool r;
 	static const int A_pin = A;
 	static const int B_pin = B;
 	static volatile byte Enc_A;
@@ -90,6 +89,7 @@ private:
 	static volatile int out_val, old_reading, new_reading;
 	static volatile long ct;
     static long old_ct;
+	static bool r;
 	
 	// ISR's
 	static void delta_A();
@@ -104,6 +104,7 @@ template<int A, int B> volatile int Quadrature_encoder<A, B>::old_reading = 0;
 template<int A, int B> volatile int Quadrature_encoder<A, B>::new_reading = 0;
 template<int A, int B> volatile long Quadrature_encoder<A, B>::ct = 0;
 template<int A, int B> long Quadrature_encoder<A, B>::old_ct = 0;
+template<int A, int B> bool Quadrature_encoder<A, B>::r = false;
 
 template<int A, int B>
 inline
@@ -129,10 +130,10 @@ Motion::motion Quadrature_encoder<A, B>::motion()
     long new_count = count();
     long delta = new_count - old_ct;
     if(delta > 0) {
-        res = (!r) ? Motion::frwd : Motion::back;
+        res = Motion::frwd;
     }
     else if (delta < 0){
-        res = (!r) ? Motion::back : Motion::frwd;
+        res = Motion::back;
     }
     else if (delta == 0){
         res = Motion::stop;
@@ -150,11 +151,16 @@ void Quadrature_encoder<A, B>::delta_A()
 {
     old_reading = new_reading;
     Enc_A = !Enc_A;
-    new_reading = Enc_A * 2 + Enc_B;
-    out_val = QEM::qem [old_reading * 4 + new_reading];
+	if(r){
+	    new_reading = Enc_A * 2 + Enc_B;
+    }
+	else {
+	    new_reading = Enc_B * 2 + Enc_A;
+	}
+	out_val = QEM::qem [old_reading * 4 + new_reading];
     switch(out_val){
       case 1:
-        ++ct;
+	    ++ct;
         break;
       case -1:
         --ct;
@@ -168,7 +174,12 @@ void Quadrature_encoder<A, B>::delta_B()
 {
     old_reading = new_reading;
     Enc_B = !Enc_B;
-    new_reading = Enc_A * 2 + Enc_B;
+	if(r){
+	    new_reading = Enc_A * 2 + Enc_B;
+    }
+	else {
+	    new_reading = Enc_B * 2 + Enc_A;
+	}
     out_val = QEM::qem [old_reading * 4 + new_reading];
     switch(out_val){
       case 1:

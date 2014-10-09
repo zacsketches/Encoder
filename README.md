@@ -118,4 +118,8 @@ which call upon static class methods for the ISRs.
 This approach allows a clean interface to users and still retains its
 performance!
 
+<<<<<<< Local Changes
+We are always looking to make this library better, so please fork us
+and open issues!*=======
 ####We are always looking to make this library better, so please fork us and open issues!
+>>>>>>> External Changes

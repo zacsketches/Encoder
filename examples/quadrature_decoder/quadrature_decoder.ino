@@ -7,7 +7,7 @@
     the Quadrature_encoder must be a singleton class constructed
     from the template with the two integer arguments of the 
     interrupt pins used for the encoder.  For example to build
-    a quadrature encoder to use int0 and int on the Arduino Uno
+    a quadrature encoder to use int0 and int1 on the Arduino Uno
     you would construct it like this:
         Quadrature_encoder<0, 1> encoder;
 
@@ -20,6 +20,10 @@
 		motion() - returns a value from the Motion::motion enum
 			corresponding to what direction the shaft has turned
 			since the last time motion() was called.
+                reverse() - changes the polarity of the decoder in case
+                        you need to change the sign of the output.  Run
+                        the example below with the .reverse() line commented
+                        out and see the difference in output.
    
     So to use the encoder constructed earlier you would call
     encoder.begin() in the setup() of the sketch and then you
@@ -34,6 +38,7 @@ void setup() {
   Serial.println();
   
   enc1.begin();
+  enc1.reverse();
 }
 
 void loop() {
