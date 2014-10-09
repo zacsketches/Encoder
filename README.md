@@ -9,18 +9,21 @@ Arduino Encoder is designed to do one thing...make it quick and easy
 to implement interrupt based quadrature decoding on your project. We 
 think it's the best for a few key reassons
 
-** - Best performance:** Interrupt driven counters with fast ISRs.
+**- Best performance:** Interrupt driven counters with fast ISRs.
 Also, lots of other libraries for motor encoders rely on polling to 
 catch changes in the encoder state...this is slow and
 does not scale if you're thinking of makeing cool robots.  Our interrupt
 driven library is designed for speed and will not lose counts even if
 you use delay(x) or other long routines in your main sketch.
-** - Simple file structure:** With only one file to include, all you need 
+
+**- Simple file structure:** With only one file to include, all you need 
 at the top of your sketch is `#include <quadrature.h>`
-** - Simple syntax: there are only three public functions for an encoder,
+
+**- Simple syntax:** there are only three public functions for an encoder,
 `.begin()`, `.count()`, `.motion()` and `reverse()`.  Everything else is 
 taken care of behind the scenes.
-** - Simple construction:** Quadrature relies on tracking two encoder
+
+**- Simple construction:** Quadrature relies on tracking two encoder
 signals so all you need to construct a decoder is the pin number that
 you are going to plug the encoder into.  For example this constructs
 a quadrature decoder on Arduino Uno:
@@ -57,12 +60,12 @@ on the Arduino Uno you would construct a decoder like this:
  For example most encoder wires are white and yellow.  If you have
  the white wire plugged into the Uno pin2 and the yellow wire
  plugged into the Uno pin 3, then swapping white->3 and yellow->2
- will change the way the counts are accumulated and .motion() will
+ will change the way the counts are accumulated and `.motion()` will
  give you the right result.  However, if you are like my group then
  your encoders are plugged into a printed circuit board and you might
- not be able to simply swap wires.  In this case, call
+ not be able to swap wires.  In this case, call
      `your_decoder_name.reverse()`
- after you call `your_decoder.begin()` in the sketch `setup()`
+ fter you call `your_decoder.begin()` in the sketch `setup()`
  function.  This will `.reverse()` the output you get.
 
 
@@ -84,7 +87,7 @@ Mary Lou's two motors like this:
 1. `cd` into your `.../Arduino/library` folder
 2. type `git clone https://github.com/zacsketches/Encoder.git` at
 the command prompt and the library will download in your library.
-3  Wink..Wink...click on the `star` icon at the top of our Github 
+3. Wink..Wink...click on the `star` icon at the top of our Github 
 page so you can keep track of our library and be aware of any changes
 or improvements.  Seriously, we want to make this the best 
 quadrature library on GitHub so give us a star and help us keep 
@@ -104,7 +107,7 @@ sympbols in the constructor, because this is required to present
 our users with a clean interface.  This requirement stems from the
 challenges of generating a function pointer to a class method.
 
-Specifically, in the .begin() function Quadrature_Encoder calls the 
+Specifically, in the `.begin()` function Quadrature_Encoder calls the 
 Arduino function `attachInterrupt(int, function_pointer, const char*)`.  
 Most other libraries do not expose a simple to use class interface 
 because the function_pointer pointing at the Interrupt Service 
@@ -115,5 +118,5 @@ which call upon static class methods for the ISRs.
 This approach allows a clean interface to users and still retains its
 performance!
 
-We are always looking to make this library better, so please fork us
-and open issues!
+####We are always looking to make this library better, so please fork us
+####and open issues!
