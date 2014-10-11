@@ -2,6 +2,7 @@
 #define QUADRATURE_H OCT_2014
 
 #include <arduino.h>
+#include <clearinghouse.h>
 
 /*
    A quadrature encoder library for Arduino that takes
@@ -51,7 +52,7 @@ namespace QEM {
 }
 
 template<int A, int B>
-class Quadrature_encoder {
+class Quadrature_encoder : public gw::Node {
 
 public:
 	//Constructor
@@ -59,7 +60,11 @@ public:
 	   TODO use pre-processor commands to make the constructor
 	   flexible for Uno, Mega or Due use.
 	*/
-	Quadrature_encoder<A, B>() {};
+	Quadrature_encoder<A, B>() :Node("Encoder") {};
+	
+	// From Base class
+    //    char* name()
+	//    int id()
     
     // Must be called in the sketch Setup
     void begin();

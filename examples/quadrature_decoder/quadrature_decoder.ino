@@ -1,4 +1,8 @@
+#include <Vector.h>
+#include <Pair.h>
+
 #include <quadrature.h>
+#include <clearinghouse.h>
 
 /*
 	Because the attachInterrupt(int, function_ptr, const) requires
@@ -31,10 +35,10 @@
     in the sketch to read the encoder.
 */
 
-Quadrature_encoder<51,53> enc1;
+Quadrature_encoder<5,4> enc1;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(57600);
   Serial.println();
   
   enc1.begin();
