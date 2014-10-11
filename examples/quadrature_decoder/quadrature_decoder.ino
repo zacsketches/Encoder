@@ -35,11 +35,17 @@
     in the sketch to read the encoder.
 */
 
+//Basics of all Glow Worm systems.
+gw::Clearinghouse ch;
+int gw::Message::msg_count = 0;
+int gw::Node::node_count = 0;
+
 Quadrature_encoder<5,4> enc1;
 
 void setup() {
   Serial.begin(57600);
   Serial.println();
+  enc1.print();
   
   enc1.begin();
   enc1.reverse();
