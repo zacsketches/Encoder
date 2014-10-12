@@ -4,6 +4,9 @@
 #include <arduino.h>
 #include <clearinghouse.h>
 
+//debug control
+#define INCLUDE_ENCODER_PRINT 1
+
 /*
    A quadrature encoder library for Arduino that takes
    advantage of inturrept processing to track direction
@@ -51,21 +54,51 @@ namespace QEM {
     const int qem[16] = {0,-1,1,2,1,0,2,-1,-1,2,0,1,2,1,-1,0};
 }
 
-template<int A, int B>
-class Quadrature_encoder : public gw::Node {
+//************************************************************************
+//*                   PURE ABSTRACT ENCODER CLASS
+//* This class provides an interface to built vectors of templated
+//* Quadrature Encoders, but access them through their common base.
+//* For example, in the multiple_inheritance example the two quadrature
+//* encoders are put into a Vector<Encoder*> and then each quadrature
+//* encoder can be accessed by iterating over the Vector.
+//************************************************************************
 
+
+class Encoder : public gw::Node{
+public:
+	
+	Encoder(const char* name) : Node (name) {}
+	
+    virtual long count() = 0;
+    
+	virtual Motion::motion motion() = 0;
+	
+	virtual void reverse() = 0;
+	
+	virtual Position::position pos() = 0;
+	
+};
+
+template<int A, int B>
+class Quadrature_encoder : public Encoder {
 public:
 	//Constructor
 	/*
 	   TODO use pre-processor commands to make the constructor
 	   flexible for Uno, Mega or Due use.
 	*/
-	Quadrature_encoder<A, B>() :Node("Encoder") {};
-	
+	Quadrature_encoder<A, B>(Position::position pos) 
+		: Encoder("Encoder"), p(pos) {};
+
+	Quadrature_encoder<A, B>(Position::position pos, const char* name) 
+		: Encoder(name), p(pos) {};
+
 	// From Base class
     //    char* name()
 	//    int id()
-    
+
+	/* Virtual Void functions that must be overwritten */
+	
     // Must be called in the sketch Setup
     void begin();
     
@@ -85,8 +118,22 @@ public:
 	//calls to .motion()
 	void reverse() { r = !r; }
 	
-private:
+	Position::position pos() { return p; }
 	
+	#if INCLUDE_ENCODER_PRINT == 1
+		void print() {
+			Serial.print(F("Node id: "));
+			Serial.print(id());
+			Serial.print("\t");
+			Serial.print(name());   
+			char buf[50];
+			sprintf(buf, ". Inturrupts on pin %d and %d", A_pin, B_pin);
+			Serial.println(buf);
+		}
+	#endif
+	
+private:
+	Position::position p;	//Position::lt or Position::rt
 	static const int A_pin = A;
 	static const int B_pin = B;
 	static volatile byte Enc_A;
