@@ -87,7 +87,7 @@ public:
 	   TODO use pre-processor commands to make the constructor
 	   flexible for Uno, Mega or Due use.
 	*/
-	Quadrature_encoder<A, B>(Position::position pos) 
+	Quadrature_encoder<A, B>(Position::position pos = Position::none) 
 		: Encoder("Encoder"), p(pos) {};
 
 	Quadrature_encoder<A, B>(Position::position pos, const char* name) 
