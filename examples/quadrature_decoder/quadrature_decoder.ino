@@ -25,25 +25,26 @@
                         the example below with the .reverse() line commented
                         out and see the difference in output.
    
-    So to use the encoder constructed earlier you would call
-    encoder.begin() in the setup() of the sketch and then you
+    So to use the encoder you would construct an object with
+    the template parameters.  Then you would call 
+    encoder.begin() in the setup() of the sketch.  Then you
     can call encoder.count() or encoder.motion() anywhere else
     in the sketch to read the encoder.
 */
 
-Quadrature_encoder<51,53> enc1;
+Quadrature_encoder<0,1> encoder;
 
 void setup() {
   Serial.begin(115200);
   Serial.println();
   
-  enc1.begin();
-  enc1.reverse();
+  encoder.begin();
+//  encoder.reverse();
 }
 
 void loop() {
   //read the encoder
-  long ct = enc1.count();
+  long ct = encoder.count();
   
   //format the output for printing 
   char buf[50];
@@ -51,12 +52,11 @@ void loop() {
   Serial.println(buf);
   
   //check the motion
-  Motion::motion m = enc1.motion();
+  Motion::motion m = encoder.motion();
   Serial.println(text(m));
 
   //delay the loop for a moment.
   //Note that the encoder continues to count even during this
   //delay because it is interrupt driven!
   delay(100);
-
 }
