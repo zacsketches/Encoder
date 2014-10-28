@@ -45,6 +45,10 @@ namespace Motion {
     }
 }
 
+namespace Board {
+	enum board{uno, due};
+}
+
 namespace QEM {
     //Quadrature Encoder Matrix from OddBot
     const int qem[16] = {0,-1,1,2,1,0,2,-1,-1,2,0,1,2,1,-1,0};
@@ -55,11 +59,7 @@ class Quadrature_encoder {
 
 public:
 	//Constructor
-	/*
-	   TODO use pre-processor commands to make the constructor
-	   flexible for Uno, Mega or Due use.
-	*/
-	Quadrature_encoder<A, B>() {};
+	Quadrature_encoder<A, B>(Board::board b = Board::uno) {};
     
     // Must be called in the sketch Setup
     void begin();
@@ -82,6 +82,8 @@ public:
 	
 private:
 	
+	Board::board b;
+	
 	static const int A_pin = A;
 	static const int B_pin = B;
 	static volatile byte Enc_A;
@@ -90,6 +92,9 @@ private:
 	static volatile long ct;
     static long old_ct;
 	static bool r;
+	
+	int pin_A_digital;
+	int pin_B_digital;
 	
 	// ISR's
 	static void delta_A();
@@ -111,11 +116,29 @@ inline
 void Quadrature_encoder<A, B>::begin()
 {
 	    //store the starting state for the two interrupt pins
-	    pinMode(A_pin, INPUT);
-	    pinMode(B_pin, INPUT);
+		if(b == Board::uno) {
+			if (A_pin == 0) {
+				pin_A_digital = 2;
+				pin_B_digital = 3;
+			} else {
+				pin_A_digital = 3;
+				pin_B_digital = 2;
+			}
+		}
+		if(b == Board::due) {
+			pin_A_digital = A_pin;
+			pin_B_digital = B_pin;
+		}
+		
+		/*
+			TODO: Add mega support
+		*/
+		
+	    pinMode(pin_A_digital, INPUT);
+	    pinMode(pin_B_digital, INPUT);
     
-	    Enc_A = digitalRead(A_pin);
-	    Enc_B = digitalRead(B_pin);
+	    Enc_A = digitalRead(pin_A_digital);
+	    Enc_B = digitalRead(pin_B_digital);
     
 	    //configure the interrupts
 		attachInterrupt(A_pin, &Quadrature_encoder<A,B>::delta_A, CHANGE);

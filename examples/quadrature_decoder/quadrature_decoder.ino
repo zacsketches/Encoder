@@ -11,8 +11,14 @@
     you would construct it like this:
         Quadrature_encoder<0, 1> encoder;
 
-	The following enum is provided in the header file:
+	The following enums are provided in the header file:
     Motion::motion {frwd, back, stop}
+	Board::board {uno, due}
+	
+	The constructor for a Quadrature_encoder requires a board type
+	so it an configure the interrupt pins properly.  The default is
+	an Arduino Uno.
+	Quadrature_encoder<PIN_A, PIN_B> (Board::board b = Board::uno)
 
     The public methods of Quadrature_encoder are:
 		begin() - must be called in setup
@@ -26,13 +32,13 @@
                         out and see the difference in output.
    
     So to use the encoder you would construct an object with
-    the template parameters.  Then you would call 
+    the template parameters and a board definition.  Then you would call 
     encoder.begin() in the setup() of the sketch.  Then you
     can call encoder.count() or encoder.motion() anywhere else
     in the sketch to read the encoder.
 */
 
-Quadrature_encoder<0,1> encoder;
+Quadrature_encoder<0,1> encoder(Board::uno);
 
 void setup() {
   Serial.begin(115200);
