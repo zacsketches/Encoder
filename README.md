@@ -119,5 +119,4 @@ This approach allows a clean interface to users and still retains its
 performance!
 
 
-####We are always looking to make this library better, so please fork us
-and open issues!
+####We are always looking to make this library better, so please fork us and open issues!
