@@ -12,15 +12,15 @@ think it's the best for a few key reassons
 **- Best performance:** Interrupt driven counters with fast ISRs.
 Also, lots of other libraries for motor encoders rely on polling to 
 catch changes in the encoder state...this is slow and
-does not scale if you're thinking of makeing cool robots.  Our interrupt
+does not scale if you're thinking of making cool robots.  Our interrupt
 driven library is designed for speed and will not lose counts even if
 you use delay(x) or other long routines in your main sketch.
 
 **- Simple file structure:** With only one file to include, all you need 
 at the top of your sketch is `#include <quadrature.h>`
 
-**- Simple syntax:** there are only three public functions for an encoder,
-`.begin()`, `.count()`, `.motion()` and `reverse()`.  Everything else is 
+**- Simple syntax:** there are only four public functions for an encoder,
+`.begin()`, `.count()`, `.motion()` and `.reverse()`.  Everything else is 
 taken care of behind the scenes.
 
 **- Simple construction:** Quadrature relies on tracking two encoder
