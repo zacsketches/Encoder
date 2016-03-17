@@ -11,13 +11,15 @@
    See the link below for the best explanation of quadrature I've found 
    on the web. 
    http://letsmakerobots.com/node/24031
+   EDIT 3/17/2016: This link is no longer active.
+   
+   See the following link for a similar description, but Oddbot doesn't seem to get a credit
+   at this link althought it looks just like his work.
+   http://www.robotshop.com/media/files/PDF/tutorial-how-to-use-a-quadrature-encoder-rs011a.pdf
    
    I've adapted the code from OdddBot to be interupt driven, and added 
    a counter.
-
-   For reference on why all the template files are included in the header
-   instead of a separate .cpp file see this link
-   http://www.parashift.com/c++-faq-lite/separate-template-class-defn-from-decl.html
+   
 */
 
 namespace Motion {
