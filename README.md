@@ -1,4 +1,4 @@
-# ARDUINO ENCODER
+# ARDUINO ENCODER demo for Peppers
 
 ####*THE BEST QUADRATURE DECODER LIBRARY FOR ARDUINO ON GITHUB!*
 ####*...and yeah...we realize we probably should have called it Arduino Decoder!*
