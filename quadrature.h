@@ -1,7 +1,7 @@
 #ifndef QUADRATURE_H
 #define QUADRATURE_H OCT_2014
 
-#include <arduino.h>
+#include <Arduino.h>
 
 /*
    A quadrature encoder library for Arduino that takes
